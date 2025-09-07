@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Regalo que te hice mi amor</title>
+  <style>
+    body {
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #ff9ec4, #ffcce7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+      padding: 20px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Corazones animados en el fondo */
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(-45deg);
+      opacity: 0;
+      animation: growFade 3s infinite ease-in-out;
+      z-index: -1;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: 10px; top: 0; }
+
+    @keyframes growFade {
+      0% { transform: scale(0.2) rotate(-45deg); opacity: 0; }
+      50% { transform: scale(1) rotate(-45deg); opacity: 0.8; }
+      100% { transform: scale(1.5) rotate(-45deg); opacity: 0; }
+    }
+
+    /* Títulos y mensajes */
+    h1 { font-size: 8vw; color: #fff; text-shadow: 1px 1px 3px #00000044; margin: 5px 0; }
+    h2 { font-size: 6vw; color: #fff; text-shadow: 1px 1px 3px #00000044; margin: 5px 0; }
+    .message { font-size: 5vw; margin: 15px; color: #fff; min-height: 6vw; }
+
+    /* Botones */
+    button {
+      padding: 2vw 5vw;
+      font-size: 4vw;
+      margin: 2vw;
+      border: none;
+      border-radius: 12px;
+      background-color: #ff6fa5;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+    button:hover { background-color: #ff4f8b; transform: scale(1.05); }
+    .hidden { display: none; }
+
+    /* Imagen final con efecto suave */
+    #final {
+      visibility: hidden;
+    }
+    #final.show {
+      visibility: visible;
+    }
+    #final img {
+      margin-top: 5vw;
+      width: 90vw;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      opacity: 0;
+      transform: scale(0.5) translateY(50px);
+      transition: opacity 1.8s ease, transform 1.8s ease;
+    }
+    #final.show img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Corazones animados de fondo -->
+  <div class="heart" style="left:10%; top:20%; animation-delay:0s;"></div>
+  <div class="heart" style="left:70%; top:50%; animation-delay:0.5s;"></div>
+  <div class="heart" style="left:40%; top:80%; animation-delay:1s;"></div>
+
+  <!-- Mensajes fijos -->
+  <h1>Regalo para mi amor</h1>
+  <h2>Para la mejor novia del mundo</h2>
+
+  <!-- Botones y mensajes dinámicos -->
+  <button onclick="showMessage(0)">Presióname 💌</button>
+  <p id="msg0" class="message hidden"></p>
+
+  <button onclick="showMessage(1)" class="hidden">Siguiente 🌸</button>
+  <p id="msg1" class="message hidden"></p>
+
+  <button onclick="showMessage(2)" class="hidden">Uno más 💖</button>
+  <p id="msg2" class="message hidden"></p>
+
+  <!-- Imagen final -->
+  <div id="final">
+    <img src="https://i.imgur.com/73nyiBJ.jpeg" alt="Ramo de girasoles">
+  </div>
+
+  <script>
+    const messages = [
+      "Otro día más que comparto a tu lado",
+      "Hoy 21 de septiembre",
+      "Te entrego un detallito esperando hacerte feliz"
+    ];
+
+    function typeWriterEffect(elementId, text, i=0, speed=60, callback) {
+      if (i < text.length) {
+        document.getElementById(elementId).innerHTML += text.charAt(i);
+        setTimeout(() => typeWriterEffect(elementId, text, i+1, speed, callback), speed);
+      } else if (callback) callback();
+    }
+
+    function showMessage(index) {
+      const btns = document.querySelectorAll("button");
+      btns[index].classList.add("hidden");
+      const msg = document.getElementById("msg"+index);
+      msg.classList.remove("hidden");
+      typeWriterEffect("msg"+index, messages[index], 0, 50, () => {
+        if (index+1 < btns.length) btns[index+1].classList.remove("hidden");
+        else {
+          const finalDiv = document.getElementById("final");
+          finalDiv.classList.add("show");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
